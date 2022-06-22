@@ -47,7 +47,17 @@ resource "aws_instance" "TheDeploymentMachine" {
         Name  = "TheDeploymentMachine"
  
     }
-    
+    provisioner "local-exec" {
+
+        command = <<-EOT
+
+        instanceid=$(aws ec2 describe-instance-status --profile AlvaroA | grep InstanceId | cut -d: -f 2)
+
+        aws ec2 associate-iam-instance-profile --instance-id $instanceid --iam-instance-profile Name=LabInstanceProfile --profile AlvaroA
+
+        EOT
+    }
+
     connection {
     type        = "ssh"
     user        = "ec2-user"
@@ -55,23 +65,17 @@ resource "aws_instance" "TheDeploymentMachine" {
     host        = self.public_ip
     }
 
-   provisioner "local-exec" {
-     command = "aws iam add-role-to-instance-profile --role-name LabRole --instance-profile-name TheDeploymentMachine"
-   }
-
-
-
-  provisioner "remote-exec" {
-    inline = [
-      "sudo yum install -y docker",
-      "sudo curl -L https://github.com/docker/compose/releases/download/1.22.0/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/sbin/docker-compose",
-      "sudo chmod +x /usr/local/sbin/docker-compose",
-      "sudo systemctl enable docker",
-      "sudo systemctl start docker",
-      "curl -LO https://dl.k8s.io/release/v1.21.0/bin/linux/amd64/kubectl",
-      "sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl",
-      
-      #"aws eks --region us-east-1 update-kubeconfig --name bitbeat-eks-cluster"
+    
+    provisioner "remote-exec" {
+      inline = [
+        "sudo yum install -y docker",
+        "sudo curl -L https://github.com/docker/compose/releases/download/1.22.0/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/sbin/docker-compose",
+        "sudo chmod +x /usr/local/sbin/docker-compose",
+        "sudo systemctl enable docker",
+        "sudo systemctl start docker",
+        "curl -LO https://dl.k8s.io/release/v1.21.0/bin/linux/amd64/kubectl",
+        "sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl",
+        "aws eks --region us-east-1 update-kubeconfig --name bitbeat-eks-cluster"
     ]
   }
   
