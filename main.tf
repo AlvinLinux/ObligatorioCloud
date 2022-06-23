@@ -51,7 +51,7 @@ resource "aws_instance" "TheDeploymentMachine" {
 
         command = <<-EOT
 
-        instanceid=$(aws ec2 describe-instance-status --profile AlvaroA | grep InstanceId | cut -d: -f 2)
+        instanceid=$(aws ec2 describe-instances --filters "Name=tag:Name,Values=TheDeploymentMachine" "Name=instance-state-name,Values=running" --profile AlvaroA | grep InstanceId | cut -d: -f 2)
 
         aws ec2 associate-iam-instance-profile --instance-id $instanceid --iam-instance-profile Name=LabInstanceProfile --profile AlvaroA
 
@@ -61,7 +61,7 @@ resource "aws_instance" "TheDeploymentMachine" {
     connection {
     type        = "ssh"
     user        = "ec2-user"
-    private_key = file("/home/alvin/Practico2/practico-networking.pem")
+    private_key = file("/home/alvin/Obligatorio/practico-networking.pem")
     host        = self.public_ip
     }
 
@@ -75,13 +75,9 @@ resource "aws_instance" "TheDeploymentMachine" {
         "sudo systemctl start docker",
         "curl -LO https://dl.k8s.io/release/v1.21.0/bin/linux/amd64/kubectl",
         "sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl",
-        "aws eks --region us-east-1 update-kubeconfig --name bitbeat-eks-cluster"
+        #"aws eks --region us-east-1 update-kubeconfig --name bitbeat-eks-cluster"
     ]
   }
   
-  depends_on = [
-      aws_eks_node_group.worker-node-group,
-      aws_ecr_repository.bitbeat-images,
-  ]
 }
 
