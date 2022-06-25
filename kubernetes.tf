@@ -8,12 +8,14 @@ resource "aws_eks_cluster" "cluster-eks" {
   endpoint_public_access = true
  }
 }
+resource "time_sleep" "wait_30_seconds" {
+  depends_on = [aws_eks_cluster.cluster-eks]
 
-resource "time_sleep" "wait_20_seconds" {
-  create_duration = "20s"
+  create_duration = "30s"
 }
 
  resource "aws_eks_node_group" "worker-node-group" {
+  depends_on = [time_sleep.wait_30_seconds]
   cluster_name  = "bitbeat-eks-cluster"
   node_group_name = var.WNName
   node_role_arn  = "arn:aws:iam::128364418855:role/LabRole"
@@ -25,12 +27,6 @@ resource "time_sleep" "wait_20_seconds" {
    max_size   = 2
    min_size   = 2
   }
-
-   depends_on = [
-      aws_eks_node_group.worker-node-group,
-      time_sleep.wait_20_seconds,
-  ]
-
  }
 
  resource "aws_ecr_repository" "bitbeat-images" {

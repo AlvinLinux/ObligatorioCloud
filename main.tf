@@ -75,9 +75,12 @@ resource "aws_instance" "TheDeploymentMachine" {
         "sudo systemctl start docker",
         "curl -LO https://dl.k8s.io/release/v1.21.0/bin/linux/amd64/kubectl",
         "sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl",
-        #"aws eks --region us-east-1 update-kubeconfig --name bitbeat-eks-cluster"
+        "sudo yum install git -y",
+        "aws s3 cp s3://terraformaa-bucket/deployment.sh ./",
+        "sudo bash deployment.sh"
     ]
-  }
-  
+    }
+  depends_on = [aws_eks_node_group.worker-node-group]
 }
+
 
