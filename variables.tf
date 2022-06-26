@@ -49,9 +49,3 @@ variable "EKSClusterName" {
 variable "WNName" {
   default = "bitbeatWN"
 }
-
-/*
-variable "arn_RoleEKS" ´{
-    default = "arn:aws:iam::128364418855:role/LabRole"
-}
-*/
