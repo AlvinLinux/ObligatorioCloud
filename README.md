@@ -39,7 +39,9 @@ Actualizamos las credenciales de AWS Academy en la ruta ~/.aws/credencials
 Corremos terraform plan para asegurarnos de que no hay errores de codigo y se observara que creen los recursos correspondientes
 Luego corremos el deployment con terraform apply y confirmamos con yes
 
-## Meter foto de la implementacion de terraform
+<p align="center">
+<img src="src/ObligatorioCloud/imagenes/tapply.png" width="300" alt="Terraform apply" />
+</p>
 
 # _Desarrollo de la implementacion_
 
