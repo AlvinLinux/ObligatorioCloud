@@ -1,10 +1,10 @@
+# Indicamos el provider, region y perfil a utilizar
 provider "aws" {
     region = var.region
     profile = var.perfil
 }
 
 # Creamos la instancia que sera utilizada para hacer los deployments
-
 resource "aws_instance" "TheDeploymentMachine" {
     ami = var.ami
     instance_type = "t2.medium"
@@ -31,7 +31,7 @@ resource "aws_instance" "TheDeploymentMachine" {
 
         EOT
     }
-
+# Copiamos el perfil de AWS a la instancia
   provisioner "file" {
     source      = "/home/alvin/.aws"
     destination = "/home/ec2-user/.aws"
