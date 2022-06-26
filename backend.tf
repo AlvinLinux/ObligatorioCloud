@@ -1,4 +1,4 @@
-# Configuramos el terraform state para que se guarde en una bucket de s3
+# Configuramos el terraform state para que se guarde en una bucket de s3 con dynamodb
 terraform {
   backend "s3" {
     bucket         = "tfstate-obligatorio-cloud-ort"
