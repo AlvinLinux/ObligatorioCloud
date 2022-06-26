@@ -69,6 +69,7 @@ resource "aws_instance" "TheDeploymentMachine" {
       "aws s3 cp s3://terraformaa-bucket/deployment-kubernetes.sh ./ --profile AlvaroA",
       "chmod 777 deployment-kubernetes.sh",
       "./deployment-kubernetes.sh",
+      "kubectl get all | grep LoadBalancer",
     ]
   }
   depends_on = [aws_eks_node_group.worker-node-group]
