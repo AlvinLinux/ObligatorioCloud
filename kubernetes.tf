@@ -1,3 +1,4 @@
+# Creamos un cluster de elastic kubernetes service
 resource "aws_eks_cluster" "cluster-eks" {
  name = var.EKSClusterName
  role_arn = "arn:aws:iam::128364418855:role/LabRole"
@@ -14,6 +15,7 @@ resource "time_sleep" "wait_30_seconds" {
   create_duration = "30s"
 }
 
+# Asignamos los worker goroups con la cantidad de instancias maximas y minimas requeridas
  resource "aws_eks_node_group" "worker-node-group" {
   depends_on = [time_sleep.wait_30_seconds]
   cluster_name  = "bitbeat-eks-cluster"
@@ -29,6 +31,7 @@ resource "time_sleep" "wait_30_seconds" {
   }
  }
 
+# Se crea un repositorio para alojar las imagenes de Docker
  resource "aws_ecr_repository" "bitbeat-images" {
   name                 = "bitbeat-images"
   image_tag_mutability = "MUTABLE"

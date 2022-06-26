@@ -1,3 +1,5 @@
+#Asignamos variables por defecto
+
 variable "perfil" {
     default = "default"
 }

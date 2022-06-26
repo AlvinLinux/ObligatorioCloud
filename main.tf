@@ -3,50 +3,24 @@ provider "aws" {
     profile = var.perfil
 }
 
-
-
-/*# Creamos un load balncer para la aplicacion web
-
-resource "aws_lb" "lb_webserver" {
-    name    = "lb11"
-    internal    =   false
-    load_balancer_type  =   "application"
-    security_groups = [aws_security_group.allow_http.id]
-    subnets = [aws_subnet.public_subnet.id]
-    enable_deletion_protection  =   false
-
-}
-
-module "nginx" {
-    source  = "./Modules"
-}
-
-resource "aws_instance" "nginx" {
-    count = var.instance_count
-    ami = var.ami
-    instance_type = "t2.micro"
-    subnet_id = var.subnets
-    vpc_security_group_ids = [aws_security_group.allow_http.id]
- #   vpc_security_group_ids = [aws_security_group.allow_ssh.id]
-    key_name = "practico-networking"
-    tags = {
-        Name  = "nginx-${count.index + 1}"
-        #Name  = "test"
-  }
-}
-*/
+# Creamos la instancia que sera utilizada para hacer los deployments
 
 resource "aws_instance" "TheDeploymentMachine" {
     ami = var.ami
-    instance_type = "t2.micro"
+    instance_type = "t2.medium"
     subnet_id = aws_subnet.public_subnetA.id
     vpc_security_group_ids = [aws_security_group.allow_ssh.id]
-   # iam_instance_profile = aws_iam_role.LabRole.name
+    root_block_device {
+      tags                  = {}
+      volume_size           = 20
+    }
     key_name = "practico-networking"
     tags = {
         Name  = "TheDeploymentMachine"
  
     }
+
+    # Ejecutan comandos de forma local, para adjuntar LabRole a la instancia
     provisioner "local-exec" {
 
         command = <<-EOT
@@ -58,6 +32,20 @@ resource "aws_instance" "TheDeploymentMachine" {
         EOT
     }
 
+  provisioner "file" {
+    source      = "/home/alvin/.aws"
+    destination = "/home/ec2-user/.aws"
+
+    connection {
+      type        = "ssh"
+      user        = "ec2-user"
+      private_key = file("/home/alvin/Obligatorio/practico-networking.pem")
+      host        = self.public_ip
+    }
+  }
+    
+
+#Datos de conexion con la instancia 
     connection {
     type        = "ssh"
     user        = "ec2-user"
@@ -65,7 +53,7 @@ resource "aws_instance" "TheDeploymentMachine" {
     host        = self.public_ip
     }
 
-    
+    #Ejecutamos Comandos de forma remota sobre la instancia 
     provisioner "remote-exec" {
       inline = [
         "sudo yum install -y docker",
@@ -73,11 +61,14 @@ resource "aws_instance" "TheDeploymentMachine" {
         "sudo chmod +x /usr/local/sbin/docker-compose",
         "sudo systemctl enable docker",
         "sudo systemctl start docker",
-        "curl -LO https://dl.k8s.io/release/v1.21.0/bin/linux/amd64/kubectl",
+        "sudo curl -LO https://dl.k8s.io/release/v1.21.0/bin/linux/amd64/kubectl",
         "sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl",
         "sudo yum install git -y",
-        "aws s3 cp s3://terraformaa-bucket/deployment.sh ./",
-        "sudo bash deployment.sh"
+        "aws s3 cp s3://terraformaa-bucket/deployment.sh ./ --profile AlvaroA",
+        "sudo bash deployment.sh",
+        "aws s3 cp s3://terraformaa-bucket/deployment-kubernetes.sh ./ --profile AlvaroA",
+        "chmod 777 deployment-kubernetes.sh",
+        "./deployment-kubernetes.sh",
     ]
     }
   depends_on = [aws_eks_node_group.worker-node-group]

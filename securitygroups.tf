@@ -1,3 +1,4 @@
+# Cramos un security group para permitir traffico http
 resource "aws_security_group" "allow_http" {
     name = "Allow http traffic"
     vpc_id = aws_vpc.new_vpc.id
@@ -29,6 +30,7 @@ resource "aws_security_group" "allow_http" {
     }
 }
 
+# Cramos un security group para permitir traffico entrante ssh
 resource "aws_security_group" "allow_ssh" {
     name = "Allow ssh traffic"
     vpc_id = aws_vpc.new_vpc.id

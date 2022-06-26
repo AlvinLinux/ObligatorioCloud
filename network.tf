@@ -1,3 +1,4 @@
+# Creamos la VPC donde sera implementados el ambiente
 resource "aws_vpc" "new_vpc" {
     cidr_block = "10.0.0.0/16"
     enable_dns_support = var.dnsSupport
@@ -6,6 +7,7 @@ resource "aws_vpc" "new_vpc" {
     }
 }
 
+# Creamos las subredes publicas y privadas asociadas a una zona de dispoinibilidad
 resource "aws_subnet" "public_subnetA" {
     vpc_id = aws_vpc.new_vpc.id
     cidr_block = var.subPublicA
@@ -43,6 +45,7 @@ resource "aws_subnet" "private_subnetB" {
     }
 }
 
+# para poder tener salida a internet se crea un internet gateway
 resource "aws_internet_gateway" "igw" {
     vpc_id = aws_vpc.new_vpc.id
     tags = {
@@ -50,6 +53,7 @@ resource "aws_internet_gateway" "igw" {
     }
 }
 
+# creamos una route table para la vpc y le adjuntamos la igw
 resource "aws_route_table" "route_igw" {
     vpc_id = aws_vpc.new_vpc.id
     route {
