@@ -55,4 +55,4 @@ Este proceso puede demorar entre 20 y 30 minutos y no hace falta la intervencion
 ![Web1](./imagenes/web.png)
 ![Web2](./imagenes/articulo.png)
 ![Web3](./imagenes/carrito.png)
-![Web4](./imagenes/oredn.png)
+![Web4](./imagenes/orden.png)
