@@ -40,6 +40,7 @@ Corremos terraform plan para asegurarnos de que no hay errores de codigo y se ob
 Luego corremos el deployment con terraform apply y confirmamos con yes
 
 ![Terraform-apply](./imagenes/tapply.png)
+
 ![Terraform-applydone](./imagenes/tapplydone.png)
 
 
