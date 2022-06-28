@@ -13,7 +13,9 @@
 - BBDD en DynamoDB "tfstate-obligatorio-cloud-ort" para utilizar con el archivo tfstate
 - S3 buckets ("tfstate-obligatorio-cloud-ort" y "terraformaa-bucket") los cuales alojaran el primero el archivo tfstate y el segundo se utilizara para descargar keys y sripts necesarios para la implementación
 - Se utilizara una instancia EC2 tipo t2.medium con disco de 20Gb "TheDeploymentMachine" la cual se utilizara para deployar toda la infraestructura de la página web
-- 
+
+![embed](./imagenes/diagrama.png)
+
 ## _Prerequisito_
 - Cuenta de AWS con un perfil creado
 - Actualizamos las credenciales de AWS Academy en la ruta ~/.aws/credencials
