@@ -52,7 +52,7 @@ Finalmente una vez que todos los recursos fueron creados se crea la instancia co
 
 Este proceso puede demorar entre 20 y 30 minutos y no hace falta la intervencion del usuario en ningun momento.
 
-![Web1](./imagenes/articulo.png)
-![Web2](./imagenes/orden.png)
+![Web1](./imagenes/web.png)
+![Web2](./imagenes/articulo.png)
 ![Web3](./imagenes/carrito.png)
-![Web4](./imagenes/web.png)
+![Web4](./imagenes/oredn.png)
