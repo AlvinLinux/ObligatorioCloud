@@ -1,3 +1,4 @@
+[embed]./imagenes/caratula.pdf[/embed]
 # Implementación de Soluciones Cloud
 ## _Diagrama de arquitectura_
 
