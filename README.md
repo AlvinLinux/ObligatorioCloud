@@ -1,4 +1,5 @@
-[embed]./imagenes/caratula.pdf[/embed]
+![embed](./imagenes/caratula.pdf)
+![Web1](./imagenes/web.png)
 # Implementación de Soluciones Cloud
 ## _Diagrama de arquitectura_
 
