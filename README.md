@@ -50,3 +50,8 @@ Posteriormente se creara el cluster junto con los worker nodes group y por ultim
 Finalmente una vez que todos los recursos fueron creados se crea la instancia con los recursos necesarios (docker, kubectl, git, keys, etc.) para generar las imagenes y pods.
 
 Este proceso puede demorar entre 20 y 30 minutos y no hace falta la intervencion del usuario en ningun momento.
+
+![Web1](./imagenes/articulo.png)
+![Web2](./imagenes/orden.png)
+![Web3](./imagenes/carrito.png)
+![Web4](./imagenes/web.png)
